@@ -1,13 +1,5 @@
-import express from "express";
+import { startApolloServer } from "./app.js";
+import { typeDefs } from "./graphql/typeDefs.js";
+import { resolvers } from "./graphql/resolvers.js";
 
-const app = express();
-
-app.get("/", (req, res) => {
-	res.send("Hello World!");
-});
-
-app.listen(3000, () => {
-	console.log("Example app listening on port 3000!");
-});
-
-export default app;
+startApolloServer(typeDefs, resolvers);
