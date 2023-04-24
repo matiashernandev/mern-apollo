@@ -3,14 +3,18 @@ import Task from "./models/Task.js";
 
 export const resolvers = {
 	Query: {
-		hello: () => "Hello World",
-
+		hello: () => "Hello world!",
 		projects: async () => {
 			return await Project.find();
 		},
-
+		project: async (_, { _id }) => {
+			return await Project.findById(_id);
+		},
 		tasks: async () => {
 			return await Task.find();
+		},
+		task: async (_, { _id }) => {
+			return await Task.findById(_id);
 		},
 	},
 	Mutation: {
@@ -21,6 +25,11 @@ export const resolvers = {
 			});
 			const savedProject = project.save();
 			return savedProject;
+		},
+		deleteProject: async (_, { _id }) => {
+			const deletedProject = await Project.findByIdAndDelete(_id);
+			if (!deletedProject) throw new Error("Project not found F");
+			return deletedProject;
 		},
 		createTask: async (_, { title, projectId }) => {
 			const projectFound = await Project.findById(projectId);
@@ -34,6 +43,11 @@ export const resolvers = {
 			});
 			const savedTask = task.save();
 			return savedTask;
+		},
+		deleteTask: async (_, { _id }) => {
+			const deletedTask = await Task.findByIdAndDelete(_id);
+			if (!deletedTask) throw new Error("Task not found F");
+			return deletedTask;
 		},
 	},
 };
